@@ -34,8 +34,8 @@ contract Multisig {
     /// @dev Event emitted when a transaction is confirmed
     event TransactionConfirmed(uint256 indexed txIndex, address indexed signer);
 
-    /// @dev Event emitted when a transaction confirmation is revoked
-    event TransactionRevoked(uint256 indexed txIndex, address indexed signer);
+    /// @dev Event emitted when a transaction confirmation is removed
+    event TransactionRemoved(uint256 indexed txIndex, address indexed signer);
 
     /// @dev Event emitted when a transaction is executed
     event TransactionExecuted(uint256 indexed txIndex);
@@ -116,8 +116,8 @@ contract Multisig {
     }
 
     /**
-     * @notice Revoke a confirmation for a transaction
-     * @param txIndex Index of the transaction to revoke confirmation for
+     * @notice Remove a confirmation for a transaction
+     * @param txIndex Index of the transaction to remove confirmation for
      */
     function removeConfirmation(uint256 txIndex) public onlySigner {
         require(txIndex < transactions.length, "Transaction does not exist");
@@ -128,7 +128,7 @@ contract Multisig {
         transaction.isConfirmed[msg.sender] = false;
         transaction.confirmations--;
 
-        emit TransactionRevoked(txIndex, msg.sender);
+        emit TransactionRemoved(txIndex, msg.sender);
     }
 
     /**
